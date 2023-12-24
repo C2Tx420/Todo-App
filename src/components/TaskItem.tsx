@@ -1,7 +1,10 @@
 import React from 'react'
+import { TaskItemModel } from '../store/todo/model'
 
-export default function TaskItem() {
+export default function TaskItem({data}:{data: TaskItemModel}) {
   return (
-    <div>TaskItem</div>
+    <div className="flex items-center">
+      
+    </div>
   )
 }
