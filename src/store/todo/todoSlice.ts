@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { TaskItemModel } from "./model";
+import { TaskItemModel } from "../../model/todo.model";
 
 export interface TodoState {
   currentFilter: string;
@@ -23,7 +23,7 @@ export const todoSlice = createSlice({
         ...state.taskList,
         {
           ...action.payload,
-          type: 'pending',
+          type: "pending",
           id: state.taskList.length
             ? state.taskList.reduce(
                 (maxId, task) => Math.max(maxId, task.id),
@@ -35,13 +35,33 @@ export const todoSlice = createSlice({
       state.taskList = newTaskList;
       localStorage.setItem("taskList", JSON.stringify(newTaskList));
     },
-    setTask: (state) => {
+    initTaskList: (state) => {
       const taskList: string = localStorage.getItem("taskList") || "";
       state.taskList = taskList ? JSON.parse(taskList) : [];
+    },
+    changeType: (state, action) => {
+      const newTaskList = state.taskList.map((task) => {
+        if (task.id === action.payload.id) {
+          return {
+            ...task,
+            type: action.payload.type === "pending" ? "done" : "pending",
+          };
+        }
+        return task;
+      });
+      state.taskList = newTaskList;
+      localStorage.setItem("taskList", JSON.stringify(newTaskList));
+    },
+    removeTask: (state, action) => {
+      const newTaskList = state.taskList.filter(
+        (task) => task.id !== action.payload
+      );
+      state.taskList = newTaskList;
     },
   },
 });
 
 const todoReducer = todoSlice.reducer;
-export const { changeFilter, addTask } = todoSlice.actions;
+export const { changeFilter, addTask, changeType, initTaskList, removeTask } =
+  todoSlice.actions;
 export default todoReducer;

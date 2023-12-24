@@ -3,17 +3,13 @@ import Button from '../Button';
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from 'react-redux';
 import { addTask } from '../../store/todo/todoSlice';
-
-interface addFormInput {
-  title: string;
-  description: string;
-}
+import { CrudFormModel } from '../../model/crud.model';
 
 export default function Add() {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
-  const { register, handleSubmit, reset: resetForm, formState: { errors } } = useForm<addFormInput>();
-  const onSubmit: SubmitHandler<addFormInput> = async (submitData) => {
+  const { register, handleSubmit, reset: resetForm, formState: { errors } } = useForm<CrudFormModel>();
+  const onSubmit: SubmitHandler<CrudFormModel> = async (submitData) => {
     await dispatch(addTask(submitData))
     return handleClose();
   }
