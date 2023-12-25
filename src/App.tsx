@@ -16,7 +16,7 @@ function App() {
   },[])
   return (
     <div className='container'>
-      <h1 className="font-bold text-2xl py-5 text-center">TodoList-App</h1>
+      <h1 className="font-bold text-2xl py-5 text-center">Todo-<span className='text-red-500'>App</span></h1>
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
