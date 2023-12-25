@@ -57,7 +57,7 @@ export const todoSlice = createSlice({
         if (task.id === action.payload.id) {
           return {
             ...task,
-            ...action.payload
+            ...action.payload,
           };
         }
         return task;

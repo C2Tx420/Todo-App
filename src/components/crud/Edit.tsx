@@ -12,7 +12,7 @@ export default function Edit({ data }: { data: TaskItemModel }) {
   const dispatch = useDispatch();
   const { control, register, handleSubmit, reset: resetForm, formState: { errors }, setValue } = useForm<CrudFormModel>();
   const onSubmit: SubmitHandler<CrudFormModel> = async (submitData) => {
-    await dispatch(editTask({ ...data, ...submitData }))
+    await dispatch(editTask({ ...data, ...submitData, due: submitData.due?.toJSON() }))
     return handleClose();
   }
   const handleClose = () => {
@@ -21,10 +21,10 @@ export default function Edit({ data }: { data: TaskItemModel }) {
   }
 
   useEffect(() => {
-    setValue('title', data.title)
-    setValue('description', data.description)
-    setValue('due', data.due && new Date(data.due))
-  })
+    setValue('title', data.title);
+    setValue('description', data.description);
+    setValue('due', data.due ? new Date(data.due) : undefined);
+  }, [data.description, data.due, data.title])
   return (
     <>
       <div

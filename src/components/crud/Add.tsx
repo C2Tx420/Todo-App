@@ -11,7 +11,7 @@ export default function Add() {
   const dispatch = useDispatch();
   const { control, register, handleSubmit, reset: resetForm, formState: { errors } } = useForm<CrudFormModel>();
   const onSubmit: SubmitHandler<CrudFormModel> = async (submitData) => {
-    await dispatch(addTask(submitData))
+    await dispatch(addTask({...submitData,due: submitData.due?.toJSON()}))
     return handleClose();
   }
   const handleClose = () => {
