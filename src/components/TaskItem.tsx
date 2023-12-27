@@ -1,4 +1,3 @@
-import React from 'react'
 import { TaskItemModel } from '../model/todo.model'
 import { useDispatch } from 'react-redux'
 import { changeType, removeTask } from '../store/todo/todoSlice';
