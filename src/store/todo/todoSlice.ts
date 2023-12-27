@@ -65,6 +65,10 @@ export const todoSlice = createSlice({
       state.taskList = newTaskList;
       localStorage.setItem("taskList", JSON.stringify(newTaskList));
     },
+    changePosition: (state, action) => {
+      state.taskList = action.payload;
+      localStorage.setItem("taskList", JSON.stringify(action.payload));
+    },
     removeTask: (state, action) => {
       const newTaskList = state.taskList.filter(
         (task) => task.id !== action.payload
@@ -76,6 +80,6 @@ export const todoSlice = createSlice({
 });
 
 const todoReducer = todoSlice.reducer;
-export const { changeFilter, addTask, changeType, initTaskList, removeTask, editTask } =
+export const { changeFilter, addTask, changeType, initTaskList, removeTask, editTask, changePosition } =
   todoSlice.actions;
 export default todoReducer;

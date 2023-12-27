@@ -3,17 +3,36 @@ import { TaskItemModel } from '../model/todo.model'
 import { useDispatch } from 'react-redux'
 import { changeType, removeTask } from '../store/todo/todoSlice';
 import Edit from './crud/Edit';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 export default function TaskItem({ data }: { data: TaskItemModel }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id: data.id });
   const dispatch = useDispatch();
+
   const handleChangeType = async () => {
     return await dispatch(changeType(data))
-  }
+  };
+
   const handleRemove = async () => {
     return await dispatch(removeTask(data.id));
-  }
+  };
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
   return (
-    <div className="flex items-center justify-between p-5 border-2 border-black rounded-md shadow-md">
+    <div
+      className="flex items-center justify-between p-5 border-2 border-black rounded-md shadow-md bg-white"
+      ref={setNodeRef} style={style} {...attributes} {...listeners}
+    >
       <div className="flex items-center gap-5">
         <div className={
           `border-2 border-black rounded-md w-10 h-10 flex items-center justify-center cursor-pointer duration-200 
