@@ -15,26 +15,6 @@ export const todoSlice = createSlice({
   name: "todo",
   initialState,
   reducers: {
-    changeFilter: (state, action) => {
-      state.currentFilter = action.payload;
-    },
-    addTask: (state, action) => {
-      const newTaskList = [
-        ...state.taskList,
-        {
-          ...action.payload,
-          type: "pending",
-          id: state.taskList.length
-            ? state.taskList.reduce(
-                (maxId, task) => Math.max(maxId, task.id),
-                -Infinity
-              ) + 1
-            : 1,
-        },
-      ];
-      state.taskList = newTaskList;
-      localStorage.setItem("taskList", JSON.stringify(newTaskList));
-    },
     initTaskList: (state) => {
       const taskList: string = localStorage.getItem("taskList") || "";
       state.taskList = taskList ? JSON.parse(taskList) : [];
@@ -52,16 +32,50 @@ export const todoSlice = createSlice({
       state.taskList = newTaskList;
       localStorage.setItem("taskList", JSON.stringify(newTaskList));
     },
+    changeFilter: (state, action) => {
+      state.currentFilter = action.payload;
+    },
+    addTask: (state, action) => {
+      const newTaskList = [
+        ...state.taskList,
+        {
+          ...action.payload,
+          type: "pending",
+          id: state.taskList.length
+            ? state.taskList.reduce(
+              (maxId, task) => Math.max(maxId, task.id),
+              -Infinity
+            ) + 1
+            : 1,
+        },
+      ];
+      state.taskList = newTaskList;
+      localStorage.setItem("taskList", JSON.stringify(newTaskList));
+    },
+    editTask: (state, action) => {
+      const newTaskList = state.taskList.map((task) => {
+        if (task.id === action.payload.id) {
+          return {
+            ...task,
+            ...action.payload
+          };
+        }
+        return task;
+      });
+      state.taskList = newTaskList;
+      localStorage.setItem("taskList", JSON.stringify(newTaskList));
+    },
     removeTask: (state, action) => {
       const newTaskList = state.taskList.filter(
         (task) => task.id !== action.payload
       );
       state.taskList = newTaskList;
+      localStorage.setItem("taskList", JSON.stringify(newTaskList));
     },
   },
 });
 
 const todoReducer = todoSlice.reducer;
-export const { changeFilter, addTask, changeType, initTaskList, removeTask } =
+export const { changeFilter, addTask, changeType, initTaskList, removeTask, editTask } =
   todoSlice.actions;
 export default todoReducer;

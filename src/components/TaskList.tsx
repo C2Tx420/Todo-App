@@ -10,14 +10,18 @@ export default function TaskList() {
   const [taskViewData, setTaskViewData] = useState<Array<TaskItemModel>>([]);
 
   useEffect(() => {
+    let data;
     switch (type) {
       case 'pending':
+        data = taskList.filter((task) => task.type === 'pending');
         break;
       case 'done':
+        data = taskList.filter((task) => task.type === 'done');
         break;
       default:
-        setTaskViewData(taskList);
+        data = taskList;
     }
+    setTaskViewData(data);
   }, [type, taskList])
   return (
     <>

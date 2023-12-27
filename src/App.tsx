@@ -20,7 +20,7 @@ function App() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             {todoTypeList.map((item: { label: string, value: string }, idx: number) =>
-              <div key={idx} className={`${todoData.currentFilter === item.value ? 'font-semibold border-b border-black transition duration-500' : ''}`} onClick={() => { dispatch(changeFilter(item.value)) }}>
+              <div key={idx} className={`cursor-pointer ${todoData.currentFilter === item.value ? 'font-semibold border-b border-black transition duration-500' : ''}`} onClick={() => { dispatch(changeFilter(item.value)) }}>
                 {item.label}
               </div>
             )}

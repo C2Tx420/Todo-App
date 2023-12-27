@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { CrudFormModel } from '../../model/crud.model';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { addTask } from '../../store/todo/todoSlice';
+import { editTask } from '../../store/todo/todoSlice';
 import { TaskItemModel } from '../../model/todo.model';
 import Button from '../Button';
 
@@ -11,7 +11,7 @@ export default function Edit({ data }: { data: TaskItemModel }) {
   const dispatch = useDispatch();
   const { register, handleSubmit, reset: resetForm, formState: { errors }, setValue } = useForm<CrudFormModel>();
   const onSubmit: SubmitHandler<CrudFormModel> = async (submitData) => {
-    await dispatch(addTask(submitData))
+    await dispatch(editTask({ ...data, ...submitData }))
     return handleClose();
   }
   const handleClose = () => {
