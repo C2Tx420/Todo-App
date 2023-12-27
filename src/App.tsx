@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import './App.css'
+import 'react-datepicker/dist/react-datepicker.css'
 import { todoTypeList } from './config/todoType'
 import { TodoState, changeFilter, initTaskList } from './store/todo/todoSlice';
 import Add from './components/crud/Add';

@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { CrudFormModel } from '../../model/crud.model';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { editTask } from '../../store/todo/todoSlice';
 import { TaskItemModel } from '../../model/todo.model';
 import Button from '../Button';
+import DatePicker from 'react-datepicker';
 
 export default function Edit({ data }: { data: TaskItemModel }) {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
-  const { register, handleSubmit, reset: resetForm, formState: { errors }, setValue } = useForm<CrudFormModel>();
+  const { control, register, handleSubmit, reset: resetForm, formState: { errors }, setValue } = useForm<CrudFormModel>();
   const onSubmit: SubmitHandler<CrudFormModel> = async (submitData) => {
     await dispatch(editTask({ ...data, ...submitData }))
     return handleClose();
@@ -22,6 +23,7 @@ export default function Edit({ data }: { data: TaskItemModel }) {
   useEffect(() => {
     setValue('title', data.title)
     setValue('description', data.description)
+    setValue('due', data.due && new Date(data.due))
   })
   return (
     <>
@@ -54,6 +56,24 @@ export default function Edit({ data }: { data: TaskItemModel }) {
                   {...register("description", { required: true })}
                 />
                 {errors.description && <p className='text-red-500 text-xs'>Description is required</p>}
+              </div>
+              <div>
+                <p>Due:</p>
+                <Controller
+                  control={control}
+                  name='due'
+                  render={({ field }) => (
+                    <div className='mt-1 border w-full p-1'>
+                      <DatePicker
+                        placeholderText='Select date'
+                        onChange={(date) => field.onChange(date)}
+                        selected={field.value}
+                        minDate={new Date()}
+                        dateFormat="dd/MM/yyyy"
+                      />
+                    </div>
+                  )}
+                />
               </div>
               <Button onClick={() => { handleSubmit(onSubmit) }}>Update</Button>
             </form>

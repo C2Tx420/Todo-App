@@ -5,6 +5,7 @@ import { changeType, removeTask } from '../store/todo/todoSlice';
 import Edit from './crud/Edit';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { isTodayOrYesterday } from '../utils/date.util';
 
 export default function TaskItem({ data }: { data: TaskItemModel }) {
   const {
@@ -57,6 +58,11 @@ export default function TaskItem({ data }: { data: TaskItemModel }) {
         </div>
       </div>
       <div className="flex items-center gap-3">
+        {data.due &&
+          <div className="bg-slate-500 px-2 py-1 rounded-xl text-white">
+            {isTodayOrYesterday(data.due.toString())}
+          </div>
+        }
         <Edit data={data} />
         <div
           className="w-9 h-9 rounded-md font-bold flex items-center justify-center border-2 border-black duration-200 cursor-pointer bg-[#E43434] hover:opacity-70 hover:duration-200"

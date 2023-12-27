@@ -3,4 +3,5 @@ export interface TaskItemModel {
     title: string;
     description: string;
     type: string;
+    due?: Date;
 }

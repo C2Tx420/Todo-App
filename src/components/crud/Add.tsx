@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import Button from '../Button';
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from 'react-redux';
 import { addTask } from '../../store/todo/todoSlice';
 import { CrudFormModel } from '../../model/crud.model';
+import DatePicker from 'react-datepicker';
 
 export default function Add() {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
-  const { register, handleSubmit, reset: resetForm, formState: { errors } } = useForm<CrudFormModel>();
+  const { control, register, handleSubmit, reset: resetForm, formState: { errors } } = useForm<CrudFormModel>();
   const onSubmit: SubmitHandler<CrudFormModel> = async (submitData) => {
     await dispatch(addTask(submitData))
     return handleClose();
@@ -43,6 +44,24 @@ export default function Add() {
                   {...register("description", { required: true })}
                 />
                 {errors.description && <p className='text-red-500 text-xs'>Description is required</p>}
+              </div>
+              <div>
+                <p>Due:</p>
+                <Controller
+                  control={control}
+                  name='due'
+                  render={({ field }) => (
+                    <div className='mt-1 border w-full p-1'>
+                      <DatePicker
+                        placeholderText='Select date'
+                        onChange={(date) => field.onChange(date)}
+                        selected={field.value}
+                        minDate={new Date()}
+                        dateFormat="dd/MM/yyyy"
+                      />
+                    </div>
+                  )}
+                />
               </div>
               <Button onClick={() => { handleSubmit(onSubmit) }}>Submit</Button>
             </form>
