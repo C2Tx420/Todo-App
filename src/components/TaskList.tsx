@@ -47,9 +47,19 @@ export default function TaskList() {
     }
   }
 
+  const getEmptyText = () => {
+    let text: string = 'No task items found. Get started by adding a new task!'
+    if(type === 'done') {
+      text = 'No tasks marked as done. Get started by completing some tasks!';
+    }
+    return text;
+  }
+
   return (
     <>
-      <div className="text-xs text-slate-400">{taskViewData.length} tasks</div>
+      {taskViewData?.length > 0 &&
+        <div className="text-xs text-slate-400">{taskViewData.length} tasks</div>
+      }
       <div className='mt-5'>
         {taskViewData && taskViewData.length ?
           <DndContext
@@ -67,7 +77,7 @@ export default function TaskList() {
             </SortableContext>
           </DndContext>
           :
-          <p className='text-center opacity-70 text-xs'>No task items found. Get started by adding a new task!</p>
+          <p className='text-center opacity-70 text-xs'>{getEmptyText()}</p>
         }
       </div>
     </>
